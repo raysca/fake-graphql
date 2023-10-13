@@ -1,0 +1,3 @@
+{{#for 0 10}}
+       INSERT INTO test-table (id, name) VALUES ('{{faker "string.alphanumeric" 5}}', '{{faker 'person.firstName'}}')
+{{/for}}
