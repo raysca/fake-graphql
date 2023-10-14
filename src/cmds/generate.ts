@@ -2,12 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import { compile } from '../compile'
 
-interface Argv {
-    file: string
-    output: string
-}
-
-export const handler = async (argv: Argv) => {
+export const handler = async (argv: any) => {
     const { file, output = argv.file } = argv
 
     if (!fs.existsSync(file)) {

@@ -1,0 +1,20 @@
+{
+    "status": 200,
+    "headers": {
+        "Content-Type": "application/json"
+    },
+    "body": [
+        {{#repeat 10}}
+            {
+                "method": "Method = {{method}}",
+                "url": "Url = {{context.method}}",
+                "slug": "Slug = {{context.slug}}",
+                "params": "Params = {{context.params}}",
+                "query": "Query = {{context.query}}",
+                "content": {
+                    "title": "{{faker 'lorem.sentence'}}"
+                }
+            }
+        {{/repeat}}
+    ]    
+}
