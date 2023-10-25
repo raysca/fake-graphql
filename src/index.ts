@@ -2,7 +2,7 @@
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import * as generate from './cmds/generate'
-import * as serve from './cmds/serve'
+import * as rest from './cmds/rest'
 
 yargs(hideBin(process.argv))
     .command('generate', 'Generate new data', {
@@ -17,7 +17,7 @@ yargs(hideBin(process.argv))
             demandOption: false,
         },
     }, generate.handler)
-    .command('serve', 'Serve mocks', {
+    .command('rest', 'RESTFul mocks', {
         dir: {
             alias: 'd',
             describe: 'Directory where the mocks are stored',
@@ -28,7 +28,7 @@ yargs(hideBin(process.argv))
             describe: 'Port to serve on',
             demandOption: false,
         },
-    }, serve.handler)
+    }, rest.handler)
     .demandCommand()
     .help()
     .argv

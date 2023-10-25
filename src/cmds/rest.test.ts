@@ -1,5 +1,5 @@
 import { describe, it, expect, mock, beforeAll } from "bun:test";
-import { handler } from './serve'
+import { handler } from './rest'
 
 const matchFn = mock(() => {
     return {

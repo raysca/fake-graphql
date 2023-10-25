@@ -30,5 +30,5 @@ export const handler = async (argv: any) => {
         }
     })
 
-    console.log(`Serving ${dir} on port ${port}`)
+    console.log(`Serving RESTful mocks from ${dir} on port ${port}`)
 }
