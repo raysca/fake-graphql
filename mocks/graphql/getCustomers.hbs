@@ -1,0 +1,9 @@
+[
+    {{#repeat 10}}
+        {
+            "id": "{{@index}}",
+            "name": "{{faker 'person.firstName'}} {{faker 'person.lastName'}}",
+            "email": "{{faker 'internet.email'}}"
+        }
+    {{/repeat}}
+]

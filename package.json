@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "rest": "bun ./src/index.ts rest",
+    "graphql": "bun --watch ./src/index.ts graphql -s mocks/graphql/schema.graphql -d mocks/graphql",
     "build": "bun build ./src/index.ts --outdir ./out --target node",
     "start": "node out/index.js",
     "test": "bun test"
@@ -17,6 +18,8 @@
   },
   "dependencies": {
     "@faker-js/faker": "^8.1.0",
+    "graphql": "^16.8.1",
+    "graphql-yoga": "^5.0.0",
     "handlebars": "^4.7.8",
     "object-path": "^0.11.8",
     "yargs": "^17.7.2"

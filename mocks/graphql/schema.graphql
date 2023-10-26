@@ -1,0 +1,10 @@
+type Customer {
+    id: ID
+    name: String
+    email: String
+}
+
+type Query {
+    getCustomer(id: ID): Customer
+    getCustomers: ![!Customer]
+}
