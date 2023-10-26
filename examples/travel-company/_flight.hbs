@@ -1,0 +1,16 @@
+{
+    "flightNumber": "{{faker "string.alpha" 6}}",
+    "departure": "{{faker "date.future"}}",
+    "arrival": "{{faker "date.future"}}",
+    "createdAt": "{{faker "date.future"}}",
+    "aircraft": "{{randomize "A320" "A321" "A330" "A340" "A350"}}",
+    "duration": {{faker "number.float" min=60 max=1000}},
+    "status": "{{randomize "Scheduled" "Delayed" "Cancelled" "Departed" "Arrived"}}",
+    "seats": {{faker "number.int" min=100 max=400}},
+    "airline": {
+        "id": "{{index}}",
+        "name": "{{randomize "Aeroflot" "Air France" "British Airways" "KLM" "Lufthansa" "SAS" "Iberia" "Alitalia" "Austrian Airlines" "Swiss International Air Lines" "Finnair" "LOT Polish Airlines" "TAP Portugal" "Aegean Airlines" "Air Europa" "Air Serbia" "AirBaltic" "Blue Air" "Bulgaria Air" "Croatia Airlines" "Czech Airlines" "EasyJet" "Eurowings" "Germanwings" "Jet2.com" "Norwegian Air Shuttle" "Pegasus Airlines" "Ryanair" "SmartWings" "Transavia" "TUIfly" "Turkish Airlines" "Vueling" "Wizz Air"}}"
+    },
+    "destination": {{> airport}},
+    "origin": {{> airport}}
+}

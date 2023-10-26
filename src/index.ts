@@ -36,7 +36,7 @@ yargs(hideBin(process.argv))
         dir: {
             alias: 'd',
             describe: 'Directory where the mocks are stored',
-            default: 'mocks',
+            default: process.cwd(),
             demandOption: false,
         },
         port: {
@@ -47,10 +47,15 @@ yargs(hideBin(process.argv))
         },
         schema: {
             alias: 's',
-            describe: 'Schema file',
-            demandOption: true
+            describe: 'The Graphql Schema file',
+            demandOption: false,
+            default: 'schema.graphql'
         }
     }, graphql.handler)
     .demandCommand()
     .help()
     .argv
+
+    process.on('SIGINT', () => {
+        process.exit(0)
+    })

@@ -1,12 +1,13 @@
 {
-  "name": "mock-generator",
-  "module": "index.ts",
+  "name": "mock-server",
+  "module": "src/index.ts",
   "type": "module",
   "scripts": {
     "rest": "bun ./src/index.ts rest",
-    "graphql": "bun --watch ./src/index.ts graphql -s mocks/graphql/schema.graphql -d mocks/graphql",
+    "dev:graphql": "bun --watch ./src/index.ts graphql -s examples/travel-company/schema.graphql -d examples/travel-company",
     "build": "bun build ./src/index.ts --outdir ./out --target node",
     "start": "node out/index.js",
+    "start:graphql": "bun ./src/index.ts graphql",
     "test": "bun test"
   },
   "devDependencies": {

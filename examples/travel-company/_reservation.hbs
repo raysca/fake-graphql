@@ -1,0 +1,10 @@
+{
+    "id": "{{faker "string.alphanumeric" 6}}",
+    "seat": "{{faker "number.int" min=1 max=50}}{{randomize "A" "B" "C" "D" "E" "F" "G" "H" "I" "J"}}",
+    "flight": {{> flight}},
+    "customer": {
+        "name": "{{faker "person.firstName"}} {{faker "person.lastName"}}",
+        "email": "{{faker "internet.email"}}",
+        "phone": "{{faker "phone.number"}}"
+    }
+}

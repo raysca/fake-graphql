@@ -1,0 +1,62 @@
+type Customer {
+    id: ID
+    name: String
+    email: String
+    reservations: [Reservation!]!
+}
+
+type Airport {
+    id: ID
+    name: String
+    city: String
+    country: String
+    incoming: [Flight!]!
+    outgoing: [Flight!]!
+}
+
+type Airline {
+    id: ID
+    name: String
+    logo: String
+    flights: [Flight!]!
+}
+
+enum FlightStatus {
+    Scheduled
+    Departed
+    Cancelled
+    Arrived
+    Delayed
+}
+
+type Flight {
+    id: ID
+    flightNumber:  String 
+    departure: String
+    arrival: String
+    airline: Airline
+    origin: Airport
+    destination: Airport
+    seats: Int
+    status: FlightStatus
+    createdAt: String
+    duration: Float
+    aircraft: String
+    reservations: [Reservation!]!
+}
+
+type Reservation {
+    id: ID
+    seat: String
+    flight: Flight
+    customer: Customer
+}
+
+type Query {
+    getCustomer(id: ID): Customer
+    getCustomers: [Customer!]!
+    getReservation(id: ID): Reservation
+    getReservations: [Reservation!]!
+    getFlight(id: ID): Flight
+    getFlights: [Flight!]!
+}

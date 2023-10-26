@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import { createSchema, createYoga } from 'graphql-yoga'
 import { createResolvers } from '../graphql/resolvers'
 import { buildSchema } from 'graphql'
+import { registerFilePartials } from '../graphql/partials'
 
 export const handler = async (argv: any) => {
     const { dir, port, schema: schemaFile } = argv
@@ -14,6 +15,7 @@ export const handler = async (argv: any) => {
         throw new Error(`Schema file ${schemaFile} does not exist`)
     }
 
+    registerFilePartials(dir)
     const schemaSource = fs.readFileSync(schemaFile).toString('utf-8')
 
     const yoga = createYoga({
