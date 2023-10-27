@@ -1,15 +1,13 @@
-import { test, expect, spyOn, mock, describe } from 'bun:test'
-import * as allFaker from '@faker-js/faker'
+import '@faker-js/faker'
 import Handlebars from 'handlebars'
 import './faker'
 
-// @ts-ignore
-spyOn(allFaker, () => {
+jest.mock('@faker-js/faker', () => {
   return {
-    Faker: mock(() => {
+    Faker: jest.fn(() => {
       return {
         string: {
-          alpha: () => 'string.alpha',
+          alpha: () => 'mock.string.alpha',
           word: (count: number): string => `string.word ${count}`
         },
         commerce: {
@@ -20,18 +18,18 @@ spyOn(allFaker, () => {
   }
 })
 
-describe.skip('faker', () => {
+describe('faker', () => {
 
   test('faker', () => {
     const result = Handlebars.compile("{{faker 'string.alpha' 20}}")({})
-    expect(result).toEqual(`[Function]`)
+    expect(result).toEqual(`mock.string.alpha`)
   })
 
   test('hash parameter passed to faker function', () => {
     const result = Handlebars.compile("{{faker 'commerce.price' min=20 max=50}}")(
       {}
     )
-    expect(result).toEqual(`"commerce.price min 20 max 50"`)
+    expect(result).toEqual("commerce.price min 20 max 50")
   })
 
   test('single parameter passed to faker function', () => {

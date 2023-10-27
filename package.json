@@ -1,24 +1,35 @@
 {
   "name": "fake-server",
   "module": "out/index.js",
-  "type": "module",
+  "type": "commonjs",
+  "main": "lib/index.js",
+  "bin": {
+    "fake-server": "lib/index.js"
+  },
   "scripts": {
-    "rest": "bun ./src/index.ts rest",
-    "dev:graphql": "bun --watch ./src/index.ts graphql -s examples/travel-company/schema.graphql -d examples/travel-company",
-    "build": "bun build ./src/index.ts --outdir ./out --target node",
-    "start": "node out/index.js",
-    "start:graphql": "bun ./src/index.ts graphql",
-    "test": "bun test"
+    "rest": "ts-node ./src/index.ts rest",
+    "dev:graphql": "ts-node ./src/index.ts graphql -s examples/travel-company/schema.graphql -d examples/travel-company",
+    "watch:graphql": "nodemon",
+    "build": "tsc",
+    "start": "node lib/index.js",
+    "test": "jest"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.6",
     "@types/yargs": "^17.0.28",
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
     "@faker-js/faker": "^8.1.0",
+    "express": "^4.18.2",
     "graphql": "^16.8.1",
     "graphql-yoga": "^5.0.0",
     "handlebars": "^4.7.8",
