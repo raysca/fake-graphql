@@ -9,12 +9,13 @@
   "scripts": {
     "rest": "ts-node ./src/index.ts rest",
     "dev:graphql": "ts-node ./src/index.ts graphql -s examples/travel-company/schema.graphql -d examples/travel-company",
-    "watch:graphql": "nodemon", 
+    "watch:graphql": "nodemon",
     "build": "tsc",
     "start": "node lib/index.js",
     "test": "jest"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.6",
     "@types/yargs": "^17.0.28",
     "bun-types": "latest",
     "jest": "^29.7.0",
