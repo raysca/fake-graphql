@@ -1,6 +1,6 @@
 {
-  "name": "mock-server",
-  "module": "src/index.ts",
+  "name": "fake-server",
+  "module": "out/index.js",
   "type": "module",
   "scripts": {
     "rest": "bun ./src/index.ts rest",
