@@ -3,7 +3,7 @@ import express from 'express'
 import { createSchema, createYoga } from 'graphql-yoga'
 import { createResolvers } from '../graphql/resolvers'
 import { buildSchema } from 'graphql'
-import { registerFilePartials } from '../graphql/partials'
+import { registerFilePartials } from '../compile/partials'
 
 export const handler = async (argv: any) => {
     const app = express()

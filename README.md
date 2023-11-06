@@ -1,98 +1,88 @@
-# mock-generator
 
-A simple mock data generator for testing and development purposes. It uses
-[fakerjs](https://fakerjs.dev/) to generate random data and
-[handlebars](https://handlebarsjs.com/) as a template engine.
+<h1 align="center">Fake Server</h1
+<p align="center">Zero configuration, no code API mock server</p>
+
+Fake Server is a simple graphql mock server. It uses [fakerjs](https://fakerjs.dev/) to generate random data and [handlebars](https://handlebarsjs.com/) as a template engine.
+
+The goal is to make it easy to create a mock server with zero configuration and zero code. It is useful for mocking out a graphql server during development or testing.
+
+## Features
+
+- Zero configuration
+- Zero code
+- File system based configuration
+- Generate random data using [fakerjs](https://fakerjs.dev/)
+- Use [handlebars](https://handlebarsjs.com/) templates to generate data
 
 ## Quick Start
 
-### Generate Mock Data
+Quickly start the server with a simple hello world example.
 
 ```bash
 echo "Hello, {{faker 'person.firstName'}}" > hello.hbs
+echo type Query { hello: String } > schema.graphql
 
-npm execute @raysca/data-gen -t hello.hbs -o hello.txt
+npx @raysca/fake-server graphql
 ```
 
-#### Routing
+## How it works
 
-The routing is filesystem based. For example, if you have a file called
-`todos/[id].hbs` and you make a request to `/todos/123` then the template will
-be used to generate the response. The path parameters are available in the
-template as `params`. For example:
+Each graphql operation is mapped to a file in the `mocks` directory. `Fake Server` matches the operation name to a file in the `mocks` directory. For example, if the operation name is `hello` then `Fake Server` will look for a file called `hello.hbs` in the `mocks` directory. If the file exists then it will be used to generate the response. If the file does not exist then a default response will be returned.
+
+## Examples
+
+Here is an example graphql schema:
+
+```graphql  
+type Query {
+  getPerson: Person
+  people: [Person]
+}
+
+type Person {
+  name: String
+  phone: String
+}
+```
+
+Here is an example `mocks/getPerson.hbs` file:
 
 ```text
 {
-    "id": "{{params.id}}",
-    "name": "{{faker 'person.firstName'}}"
+    "name": "{{faker 'person.firstName'}} {{faker 'person.lastName'}}",
+    "phone": "{{faker 'phone.phoneNumber'}}"
 }
 ```
 
-#### Mock Definition
+Here is an example `mocks/people.hbs` file:
 
-Example
-
-```hbs
-{
-    "status": 200,
-    "headers": {
-        "Content-Type": "application/json"
-    },
-    "body": {
-        "id": "{{context.params.id}}",
-        "name": "{{faker 'person.firstName'}}"
+```text
+[
+{{#repeat 2}}
+    {
+        "name": "{{faker 'person.firstName'}} {{faker 'person.lastName'}}",
+        "phone": "{{faker 'phone.phoneNumber'}}"
     }
-}
-```
-
-#### Mock Context
-
-The mock context is available in the template as `context`. It contains the
-following properties:
-
-| Property  | Description          |
-| --------- | -------------------- |
-| `params`  | The path parameters  |
-| `query`   | The query parameters |
-| `body`    | The request body     |
-| `headers` | The request headers  |
-| `method`  | The request method   |
-| `url`     | The request url      |
-
-See the [mocks](mocks) directory for more mock examples.
-
-### Serving Mocks
-
-```bash
-mkdir -p mocks/todos
-
-echo '{ "body": "{{faker \'person.firstName\' }}" }' > mocks/todos/\[id\].hbs
-
-npm execute @raysca/data-gen -p 8080
-```
-
-### Mocking Server
-
-```bash
-npm execute @raysca/data-gen -d path/to/templates -p 8080
+{{/repeat}}
+]
 ```
 
 ## Installation
 
 ```bash
-npm install -g @raysca/data-gen
+npm install -g @raysca/fake-server
 ```
 
 or if you prefer yarn
 
 ```bash
-yarn global add @raysca/data-gen
+yarn global add @raysca/fake-server
 ```
 
 ## Usage
 
 ```bash
-mock-generator --help
+faker-server graphql --help
 ```
 
 Also see the [examples](examples) directory for more examples.

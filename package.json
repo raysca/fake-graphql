@@ -1,5 +1,6 @@
 {
-  "name": "fake-server",
+  "name": "@raysca/fake-server",
+  "description": "A fake server for REST and GraphQL",
   "module": "out/index.js",
   "type": "commonjs",
   "main": "lib/index.js",
@@ -12,7 +13,7 @@
     "watch:graphql": "nodemon",
     "build": "tsc",
     "start": "node lib/index.js",
-    "test": "jest"
+    "test": "jest src/**/*.test.ts"
   },
   "devDependencies": {
     "@types/jest": "^29.5.6",
