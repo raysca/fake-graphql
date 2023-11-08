@@ -1,0 +1,129 @@
+{
+    "__typename": "Product",
+    "id": "gid://shopify/Product/{{faker 'number.int' min=1000000000 max=9999999999}}",
+    "availableForSale": true,
+    "title": "{{coffee-name}}",
+    "productType": "Coffee",
+    "createdAt": "{{faker 'date.recent' }}",
+    "publishedAt": "{{faker 'date.recent' }}",
+    "updatedAt": "{{faker 'date.recent' }}",
+    "handle": "{{faker 'lorem.slug' 5}}",
+    "vendor": "{{faker 'company.name' }}",
+    "description": "Our classic Breakfast Blend has a smooth, mild taste with low acidity and a light body. It’s our recommended morning cup of coffee",
+    "seo": {
+        "description": "The best coffee in the world",
+        "title": "{{faker 'commerce.productAdjective'}}"
+    },
+    "options": [
+        {
+            "name": "Size",
+            "values": [
+                "Small",
+                "Medium",
+                "Large"
+            ]
+        }
+    ],
+    "priceRange": {
+        "maxVariantPrice": {{> money}},
+        "minVariantPrice": {{> money}}
+    },
+    "featuredImage": {
+        "altText": "Coffee image",
+        "id": "gid://shopify/ProductImage/{{faker 'number.int' min=1000000000 max=9999999999}}",
+        "url": "http://localhost:3001/{{coffee-image}}.png"
+    },
+    "compareAtPriceRange": {
+        "maxVariantPrice": {{> money}},
+        "minVariantPrice": {{> money}}
+    },
+    "metafields": [
+        {
+            "description": "Coffee Blend",
+            "key": "type",
+            "value": "Blend",
+            "namespace": "global",
+            "valueType": "string"
+        },
+        {
+            "description": "Coffee Roast",
+            "key": "roast",
+            "value": "Medium",
+            "namespace": "global",
+            "valueType": "string"
+        },
+        {
+            "description": "The best coffee in the world",
+            "key": "flavor",
+            "value": "Chocolate, Caramel, Citrus",
+            "namespace": "global",
+            "valueType": "string"
+        }
+    ],
+    "images": {
+        "nodes": [
+            {
+                "altText": "Coffee image",
+                "id": "gid://shopify/ProductImage/{{faker 'number.int' min=1000000000 max=9999999999}}",
+                "url": "http://localhost:3001/{{coffee-image}}.png",
+                "width": 512,
+                "height": 420
+        ]
+    },
+    "variants": {
+        "nodes": [
+            {
+                "__typename": "ProductVariant",
+                "id": "gid://shopify/ProductVariant/{{faker "string.uuid" }}",
+                "availableForSale": true,
+                "currentlyNotInStock": true,
+                "compareAtPrice": {{> money}},
+                "id": "gid://shopify/ProductVariant/{{faker 'number.int' min=1000000000 max=9999999999}}",
+                "price": {{> money}},
+                "selectedOptions": [
+                    {
+                        "name": "Size",
+                        "value": "Small"
+                    }
+                ],
+                "sku": "{{faker "string.alphanumeric" 5}}",
+                "title": "Whole Bean",
+                "featuredImage": {
+                    "altText": "Coffee image",
+                    "id": "gid://shopify/ProductImage/{{faker 'number.int' min=1000000000 max=9999999999}}",
+                    "url": "http://localhost:3001/{{coffee-image}}.png"
+                },
+                "priceRange": {
+                    "maxVariantPrice": {{> money}},
+                    "minVariantPrice": {{> money}}
+                }
+            },
+            {
+                "__typename": "ProductVariant",
+                "id": "gid://shopify/ProductVariant/{{faker "string.uuid" }}",
+                "availableForSale": true,
+                "currentlyNotInStock": true,
+                "compareAtPrice": {{> money}},
+                "id": "gid://shopify/ProductVariant/{{faker 'number.int' min=1000000000 max=9999999999}}",
+                "price": {{> money}},
+                "selectedOptions": [
+                    {
+                        "name": "Size",
+                        "value": "Small"
+                    }
+                ],
+                "sku": "{{faker "string.alphanumeric" 5}}",
+                "title": "Ground",
+                "featuredImage": {
+                    "altText": "Coffee image",
+                    "id": "gid://shopify/ProductImage/{{faker 'number.int' min=1000000000 max=9999999999}}",
+                    "url": "http://localhost:3001/{{coffee-image}}.png"
+                },
+                "priceRange": {
+                    "maxVariantPrice": {{> money}},
+                    "minVariantPrice": {{> money}}
+                }
+            }
+        ]
+    }
+}

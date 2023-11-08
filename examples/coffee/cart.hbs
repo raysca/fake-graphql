@@ -1,0 +1,45 @@
+{
+    "id": "gid://shopify/Cart/{{faker "string.uuid" }}",
+    "createdAt": "{{faker "date.past"}}",
+    "totalQuantity": "0",
+    "updatedAt": "{{faker "date.past"}}",
+    "checkoutUrl": "{{faker "internet.url"}}",
+     "cost": {
+        "checkoutChargeAmount": {{> money}},
+        "subtotalAmount": {{> money min=500 max=700}},
+        "totalDutyAmount": {{> money min=50 max=100}},
+        "totalAmount": {{> money min=700 max=1200}},
+        "totalTaxAmount": {{> money min=20 max=100}},
+        "totalTaxAmountEstimated": false
+    },
+     "attributes": [
+        {{#repeat 3}}
+            {
+                "key": "{{faker "string.alphanumeric" 5}}",
+                "value": "{{faker "string.alphanumeric" 5}}"
+            }
+        {{/repeat}}
+    ],
+     "buyerIdentity": {
+        "id": "{{faker "number.int" min=1 max=100}}",
+        "countryCode": "US",
+        "customer": {
+            "id": "{{faker "string.uuid"}}",
+            "acceptsMarketing": true,
+            "createdAt": "{{faker "date.recent"}}",
+            "updatedAt": "{{faker "date.recent"}}",
+            "displayName": "{{faker "person.firstName"}} {{faker "person.lastName"}}",
+            "email": "{{faker "internet.email"}}",
+            "firstName": "{{faker "person.firstName"}}",
+            "lastName": "{{faker "person.lastName"}}",
+            "numberOfOrders": {{faker "number.int" min=0 max=50}},
+            "phone": "{{faker "phone.number"}}"
+        },
+        "email": "{{faker "internet.email"}}",
+        "phone": "{{faker "phone.number"}}"
+    },
+    "lines": {
+        "nodes": []
+    },
+    "discountCodes": []
+}

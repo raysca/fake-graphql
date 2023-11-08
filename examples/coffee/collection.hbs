@@ -1,0 +1,16 @@
+{
+    "id": "gid://shopify/Collection/{{faker 'number.int' min=1000000000 max=9999999999}}",
+    "description": {{{nlbr (faker 'commerce.productDescription')}}},
+    "descriptionHtml": {{{nlbr (faker 'lorem.lines' min=3 max=5)}}},
+    "onlineStoreUrl": "{{faker 'internet.url'}}",
+    "title": "{{faker 'commerce.productAdjective'}}",
+    "updatedAt": "{{faker 'date.recent'}}",
+    "handle": "{{faker 'lorem.slug' 5}}",   
+    "products": {
+        "nodes": [
+            {{> coffee-product coffee-name="Kenya Githembe" coffee-image="kenya"}},
+            {{> coffee-product coffee-name="Decaf Colombia" coffee-image="colombia"}},
+            {{> coffee-product coffee-name="Ethiopia Dimtu Tero" coffee-image="ethiopia"}}
+        ]
+    }
+}
