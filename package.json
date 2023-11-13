@@ -10,6 +10,7 @@
   "scripts": {
     "rest": "ts-node ./src/index.ts rest",
     "dev:graphql:coffee": "ts-node ./src/main.ts graphql -s examples/coffee/schema.graphql -m examples/coffee",
+    "dev:graphql:airlines": "ts-node ./src/main.ts graphql -s examples/airlines/schema.graphql -m examples/airlines",
     "watch:graphql": "nodemon",
     "build": "tsc",
     "lint": "eslint src/**/*.ts",

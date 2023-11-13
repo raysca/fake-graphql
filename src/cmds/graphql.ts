@@ -1,3 +1,4 @@
+import http, { IncomingMessage, ServerResponse } from 'node:http'
 import fs from 'node:fs'
 import express from 'express'
 import { registerFilePartials, watchPartials } from '../compile/partials'
@@ -11,11 +12,11 @@ interface HandlerParams {
     watch?: boolean
 }
 
-export const handler = async (argv: HandlerParams): Promise<() => void> => {
+export const handler = async (argv: HandlerParams): Promise<() => http.Server<typeof IncomingMessage, typeof ServerResponse>> => {
     const { mocks, port, schema: schemaFile, endpoint, watch = true } = argv
 
     if (fs.existsSync(schemaFile) === false) {
-        fs.writeFileSync(schemaFile, 
+        fs.writeFileSync(schemaFile,
             `
                 type Query {
                     hello: String!
@@ -23,8 +24,8 @@ export const handler = async (argv: HandlerParams): Promise<() => void> => {
             `
         )
     }
-    
-    if(fs.existsSync(mocks) === false) {
+
+    if (fs.existsSync(mocks) === false) {
         throw new Error(`mocks directory ${mocks} does not exist`)
     }
 
@@ -35,8 +36,8 @@ export const handler = async (argv: HandlerParams): Promise<() => void> => {
     const app = express()
     app.use(router)
 
-    return () => {
-        app.listen(port, () => {
+    return (): http.Server<typeof IncomingMessage, typeof ServerResponse> => {
+        return app.listen(port, () => {
             console.log(`Running a GraphQL API server at ${port}${endpoint}`)
         })
     }

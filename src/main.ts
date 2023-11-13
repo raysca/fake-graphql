@@ -1,24 +1,14 @@
 #!/usr/bin/env node
 import yargs from 'yargs'
-import path from 'path'
+import path from 'node:path'
+import fs from 'node:fs'
 import { hideBin } from 'yargs/helpers'
-import * as generate from './cmds/generate'
+import http, { IncomingMessage, ServerResponse } from 'node:http'
 import * as rest from './cmds/rest'
 import * as graphql from './cmds/graphql'
+import { ar } from '@faker-js/faker'
 
 yargs(hideBin(process.argv))
-    .command('generate', 'Generate new data', {
-        file: {
-            alias: 'f',
-            describe: 'File to use as template',
-            demandOption: false,
-        },
-        output: {
-            alias: 'o',
-            describe: 'Output file',
-            demandOption: false,
-        },
-    }, generate.handler)
     .command('rest', 'RESTFul mocks', {
         dir: {
             alias: 'd',
@@ -59,8 +49,22 @@ yargs(hideBin(process.argv))
             default: '/api/graphql'
         }
     }, async (argv) => {
-        const proc =  await graphql.handler(argv)
-        proc()
+        let app: http.Server<typeof IncomingMessage, typeof ServerResponse>;
+        let start;
+
+        if (argv.watch) {
+            if (fs.existsSync(path.resolve(argv.schema))) {
+                fs.watchFile(path.resolve(argv.schema), async (event) => {
+                    console.log('**** Schema file changed - Restarting Server ****')
+                    app.close()
+                    start = await graphql.handler(argv)
+                    app = start()
+                })
+            }
+        }
+        
+        start = await graphql.handler(argv)
+        app = start()
     })
     .demandCommand()
     .help()
