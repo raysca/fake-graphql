@@ -4,9 +4,7 @@ import './helpers'
 interface GenerateInterface {
   template: string
   locale?: string
-  context?: {
-    [key: string]: any
-  }
+  context?: Record<string, unknown>
 }
 
 export const compile = (gi: GenerateInterface): string => {

@@ -1,35 +1,43 @@
 import fs from 'node:fs'
 import express from 'express'
-import { createSchema, createYoga } from 'graphql-yoga'
-import { createResolvers } from '../graphql/resolvers'
-import { buildSchema } from 'graphql'
-import { registerFilePartials } from '../compile/partials'
+import { registerFilePartials, watchPartials } from '../compile/partials'
+import { createRouter } from '../graphql/router'
 
-export const handler = async (argv: any) => {
-    const app = express()
+interface HandlerParams {
+    dir: string
+    port: number
+    schema: string
+    endpoint: string
+    watch?: boolean
+}
 
-    const { dir, port, schema: schemaFile } = argv
-
-    if (schemaFile === undefined) {
-        throw new Error(`A Schema file is required to run the GraphQL server`)
-    }
+export const handler = async (argv: HandlerParams): Promise<() => void> => {
+    const { dir, port, schema: schemaFile, endpoint, watch = true } = argv
 
     if (fs.existsSync(schemaFile) === false) {
-        throw new Error(`Schema file ${schemaFile} does not exist`)
+        fs.writeFileSync(schemaFile, 
+            `
+                type Query {
+                    hello: String!
+                }
+            `
+        )
+    }
+    
+    if(fs.existsSync(dir) === false) {
+        throw new Error(`Directory ${dir} does not exist`)
     }
 
     registerFilePartials(dir)
-    const schemaSource = fs.readFileSync(schemaFile).toString('utf-8')
+    watch && watchPartials(dir)
 
-    const yoga = createYoga({
-        schema: createSchema({
-            typeDefs: schemaSource,
-            resolvers: createResolvers(buildSchema(schemaSource), dir)
+    const router = createRouter(argv)
+    const app = express()
+    app.use(router)
+
+    return () => {
+        app.listen(port, () => {
+            console.log(`Running a GraphQL API server at ${port}${endpoint}`)
         })
-    })
-
-    app.use(yoga.graphqlEndpoint, yoga)
-    app.listen(port, () => {
-        console.log(`Running a GraphQL API server at http://localhost:${port}/graphql`)
-    })
+    }
 }

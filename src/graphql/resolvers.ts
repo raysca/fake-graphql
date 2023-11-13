@@ -1,27 +1,25 @@
 import path from 'node:path'
 import fs from 'node:fs'
-import { GraphQLSchema } from "graphql";
+import { GraphQLFieldMap, GraphQLSchema } from "graphql";
 import { compile } from '../compile';
 
-const makeResolvers = (fields: any, mocksDir: string) => {
+const makeResolvers = (fields: GraphQLFieldMap<any, any>, mocksDir: string) => {
     const operations: Record<string, any> = {}
 
     for (const fieldName in fields) {
-        operations[fieldName] = async (_: any, args: any, context: any): Promise<any> => {
+        operations[fieldName] = async (_: Record<string, unknown>, args: Record<string, unknown>, context: Record<string, unknown>): Promise<Record<string, unknown>> => {
 
-            const hbsFile = path.join(path.resolve(mocksDir), `${fieldName}.hbs`)
-            const jsonFile = path.join(path.resolve(mocksDir), `${fieldName}.json`)
+            const file = [
+                path.join(path.resolve(mocksDir), `${fieldName}.hbs`),
+                path.join(path.resolve(mocksDir), `${fieldName}.json`)
+            ].find(fs.existsSync)
 
-            if (!fs.existsSync(hbsFile) && !fs.existsSync(jsonFile)) {
+            if (!file) {
                 throw new Error(`No mock definition found for ${fieldName} in ${path.resolve(mocksDir)}`)
             }
 
-            if (fs.existsSync(jsonFile)) {
-                const jsonContent = JSON.parse(fs.readFileSync(jsonFile).toString('utf-8'))
-                return jsonContent
-            }
-
-            const content = compile({ template: fs.readFileSync(hbsFile).toString('utf-8') })
+            const template = fs.readFileSync(file, 'utf-8')
+            const content = compile({ template })
             return JSON.parse(content)
         }
     }
@@ -30,7 +28,7 @@ const makeResolvers = (fields: any, mocksDir: string) => {
 }
 
 export const createResolvers = (schema: GraphQLSchema, mocksDir: string) => {
-    const resolvers: Record<string, any> = {}
+    const resolvers: Record<string, unknown> = {}
     const queryType = schema.getQueryType()
     const mutationType = schema.getMutationType()
 

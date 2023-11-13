@@ -26,7 +26,22 @@ export const registerFilePartials = (partialsPath: string): void => {
                 }
             }
         }
-    } catch (error: any) {
-        console.warn(error.message)
+    } catch (error: unknown) {
+        console.warn(error)
+    }
+}
+
+
+export const watchPartials = (partialsPath: string): void => {
+    try {
+        fs.watch(partialsPath, (eventType, filename) => {
+            console.log(`Re-Register Partial: ${filename} because of ${eventType}`)
+            if (filename?.startsWith('_') && filename.endsWith('.hbs')) {
+                const fullPath = path.join(partialsPath, filename)
+                registerPartial(fullPath)
+            }
+        })
+    } catch (error: unknown) {
+        console.warn(error)
     }
 }

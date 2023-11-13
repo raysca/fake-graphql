@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import yargs from 'yargs'
+import path from 'path'
 import { hideBin } from 'yargs/helpers'
 import * as generate from './cmds/generate'
 import * as rest from './cmds/rest'
@@ -49,9 +50,18 @@ yargs(hideBin(process.argv))
             alias: 's',
             describe: 'The Graphql Schema file',
             demandOption: false,
-            default: 'schema.graphql'
+            default: path.resolve(process.cwd(), 'schema.graphql')
+        },
+        endpoint: {
+            alias: 'e',
+            describe: 'The endpoint to serve the graphql server on',
+            demandOption: false,
+            default: '/api/graphql'
         }
-    }, graphql.handler)
+    }, async (argv) => {
+        const proc =  await graphql.handler(argv)
+        proc()
+    })
     .demandCommand()
     .help()
     .argv

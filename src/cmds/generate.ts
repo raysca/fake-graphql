@@ -2,7 +2,12 @@ import path from 'path'
 import fs from 'fs'
 import { compile } from '../compile'
 
-export const handler = async (argv: any) => {
+interface GenerateInterface {
+    file: string
+    output?: string
+}
+
+export const handler = async (argv: GenerateInterface) => {
     const { file, output = argv.file } = argv
 
     if (!fs.existsSync(file)) {
