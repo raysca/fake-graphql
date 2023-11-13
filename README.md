@@ -1,18 +1,17 @@
+<h1 align="center">Fake GraphQL</h1
+<p align="center">Mock your GraphQL API with the power of the filesystem</p>
 
-<h1 align="center">Fake Server</h1
-<p align="center">Zero configuration, no code API mock server</p>
+![Architecture](architecture.png "Architecture")
 
-Fake Server is a simple graphql mock server. It uses [fakerjs](https://fakerjs.dev/) to generate random data and [handlebars](https://handlebarsjs.com/) as a template engine.
-
-The goal is to make it easy to create a mock server with zero configuration and zero code. It is useful for mocking out a graphql server during development or testing.
+Fake GraphQL is a tool that allows you to mock your GraphQL API with the power of the filesystem. It uses fakerjs to generate random data and handlebars as a template engine. The goal is to make it easy to create a mock server with zero configuration and zero code. It is useful for mocking out a GraphQL server during development or testing.
 
 ## Features
 
-- Zero configuration
-- Zero code
-- File system based configuration
-- Generate random data using [fakerjs](https://fakerjs.dev/)
-- Use [handlebars](https://handlebarsjs.com/) templates to generate data
+- Zero configuration (just run `fake-graphql graphql -s schema.graphql`)
+- Zero code (no need to write any code)
+- File system based mocks
+- Easily generate sample data using [fakerjs](https://fakerjs.dev/)
+- Use [handlebars](https://handlebarsjs.com/) to generate complex data
 
 ## Quick Start
 
@@ -22,18 +21,40 @@ Quickly start the server with a simple hello world example.
 echo "Hello, {{faker 'person.firstName'}}" > hello.hbs
 echo type Query { hello: String } > schema.graphql
 
-npx @raysca/fake-server graphql
+npx @raysca/fake-graphql graphql
+```
+
+The graphql server will be running on http://localhost:8080/api/graphql with a
+playground to test it out.
+
+## Server Options
+
+| Option                  | Description                                  | Default           |
+| ----------------------- | -------------------------------------------- | ----------------- |
+| `-s, --schema <schema>` | Path to the graphql schema file.             | current directory |
+| `-m, --mocks <mocks>`   | Path to the mocks directory.                 | current directory |
+| `-p, --port <port>`     | Port to run the server on.                   | 8080              |
+| `-e, --endpoint`        | The graphql endpoint will be accessible from | /api/graphql      |
+| `-w, --watch`           | Reload server if schema/mocks changes        | false             |
+
+```bash
+Usage: fake-graphql graphql --help
 ```
 
 ## How it works
 
-Each graphql operation is mapped to a file in the `mocks` directory. `Fake Server` matches the operation name to a file in the `mocks` directory. For example, if the operation name is `hello` then `Fake Server` will look for a file called `hello.hbs` in the `mocks` directory. If the file exists then it will be used to generate the response. If the file does not exist then a default response will be returned.
+Each graphql operation is mapped to a file in the `mocks` directory.
+`Fake GraphQL` matches the operation name to a file in the `mocks` directory. For
+example, if the operation name is `hello` then `Fake GraphQL` will look for a
+file called `hello.hbs` in the `mocks` directory. If the file exists then it
+will be used to generate the response. If the file does not exist then a default
+response will be returned.
 
 ## Examples
 
 Here is an example graphql schema:
 
-```graphql  
+```graphql
 type Query {
   getPerson: Person
   people: [Person]
@@ -67,36 +88,16 @@ Here is an example `mocks/people.hbs` file:
 ]
 ```
 
-## Installation
+## Advance Templates and Helpers
 
-```bash
-npm install -g @raysca/fake-server
-```
+Whilst `Fake GraphQL` supports simple JSON file based mocks, the power of the server shines when combined with handlebars templates and helpers.
 
-or if you prefer yarn
-
-```bash
-yarn global add @raysca/fake-server
-```
-
-## Usage
-
-```bash
-faker-server graphql --help
-```
-
-Also see the [examples](examples) directory for more examples.
-
-## Templates Helpers
-
-`mock-generator` uses [handlebars](https://handlebarsjs.com/) as a template
-engine. The following extra helpers are available to use in your handlebars
-templates:
+The sever has a number of built-in helpers to make it easy to generate random data. Here are the built-in helpers:
 
 ### faker
 
-The `faker` helper is used to generate random data using
 [fakerjs](https://fakerjs.dev/). It takes a single argument which is the name of
+The `faker` helper is used to generate random data using
 the faker method to call. For example:
 
 ```text
@@ -104,6 +105,8 @@ the faker method to call. For example:
 {{faker 'lorem.lines' min=3 max=5 }}
 {{faker "string.alphanumeric" 5}}
 ```
+
+All the faker methods are supported. See the [fakerjs](https://fakerjs.dev/)
 
 ### random
 
@@ -141,19 +144,4 @@ useful for generating a list of of values For example:
 {{/for}}
 ```
 
-## Development
-
-To install dependencies:
-
-```bash
-bun install
-```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.0.2. [Bun](https://bun.sh)
-is a fast all-in-one JavaScript runtime.
+Also see the [examples](examples) directory for more examples.

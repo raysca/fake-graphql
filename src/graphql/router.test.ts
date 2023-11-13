@@ -23,7 +23,7 @@ describe('createRouter', () => {
         fsReadFileSync.mockReturnValueOnce(`type Query { hello: String! }`)
 
         const router = createRouter({
-            dir: './',
+            mocks: './',
             port: 4000,
             schema: 'schema.graphql',
             endpoint: '/graphql',
@@ -51,7 +51,7 @@ describe('createRouter', () => {
         fsReadFileSync.mockReturnValue(JSON.stringify('world'))
 
         const router = createRouter({
-            dir: './',
+            mocks: './',
             port: 4000,
             schema: 'schema.graphql',
             endpoint: '/graphql',

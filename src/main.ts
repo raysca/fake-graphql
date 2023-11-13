@@ -34,8 +34,8 @@ yargs(hideBin(process.argv))
         },
     }, rest.handler)
     .command('graphql', 'Start the mock graphql server', {
-        dir: {
-            alias: 'd',
+        mocks: {
+            alias: 'm',
             describe: 'Directory where the mocks are stored',
             default: process.cwd(),
             demandOption: false,

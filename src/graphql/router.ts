@@ -5,7 +5,7 @@ import { createResolvers } from './resolvers'
 import { buildSchema } from 'graphql'
 
 interface Argv {
-    dir: string
+    mocks: string
     port: number
     schema: string
     endpoint: string
@@ -14,7 +14,7 @@ interface Argv {
 
 export const createRouter = (argv: Argv): Router => {
     const app = express.Router()
-    const { dir, schema: schemaFile, endpoint } = argv
+    const { mocks, schema: schemaFile, endpoint } = argv
 
     const schemaSource = fs.readFileSync(schemaFile, 'utf-8')
     const noneExecutableSchema = buildSchema(schemaSource)
@@ -22,7 +22,7 @@ export const createRouter = (argv: Argv): Router => {
         graphqlEndpoint: endpoint,
         schema: createSchema({
             typeDefs: schemaSource,
-            resolvers: createResolvers(noneExecutableSchema, dir)
+            resolvers: createResolvers(noneExecutableSchema, mocks)
         })
     })
 

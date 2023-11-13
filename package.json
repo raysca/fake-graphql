@@ -1,15 +1,15 @@
 {
-  "name": "@raysca/fake-server",
-  "description": "A fake server for REST and GraphQL",
+  "name": "@raysca/fake-graphql",
+  "description": "Effortless GraphQL Mocking: Elevate your development experience with an innovative mock server, seamlessly powered by filesystem integration, dynamic Handlebars templating, and realistic data generation with Faker.js",
   "module": "out/main.js",
   "type": "commonjs",
   "main": "lib/main.js",
   "bin": {
-    "fake-server": "lib/main.js"
+    "fake-graphql": "lib/main.js"
   },
   "scripts": {
     "rest": "ts-node ./src/index.ts rest",
-    "dev:graphql:coffee": "ts-node ./src/main.ts graphql -s examples/coffee/schema.graphql -d examples/coffee",
+    "dev:graphql:coffee": "ts-node ./src/main.ts graphql -s examples/coffee/schema.graphql -m examples/coffee",
     "watch:graphql": "nodemon",
     "build": "tsc",
     "lint": "eslint src/**/*.ts",

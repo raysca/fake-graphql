@@ -4,7 +4,7 @@ import { registerFilePartials, watchPartials } from '../compile/partials'
 import { createRouter } from '../graphql/router'
 
 interface HandlerParams {
-    dir: string
+    mocks: string
     port: number
     schema: string
     endpoint: string
@@ -12,7 +12,7 @@ interface HandlerParams {
 }
 
 export const handler = async (argv: HandlerParams): Promise<() => void> => {
-    const { dir, port, schema: schemaFile, endpoint, watch = true } = argv
+    const { mocks, port, schema: schemaFile, endpoint, watch = true } = argv
 
     if (fs.existsSync(schemaFile) === false) {
         fs.writeFileSync(schemaFile, 
@@ -24,12 +24,12 @@ export const handler = async (argv: HandlerParams): Promise<() => void> => {
         )
     }
     
-    if(fs.existsSync(dir) === false) {
-        throw new Error(`Directory ${dir} does not exist`)
+    if(fs.existsSync(mocks) === false) {
+        throw new Error(`mocks directory ${mocks} does not exist`)
     }
 
-    registerFilePartials(dir)
-    watch && watchPartials(dir)
+    registerFilePartials(mocks)
+    watch && watchPartials(mocks)
 
     const router = createRouter(argv)
     const app = express()

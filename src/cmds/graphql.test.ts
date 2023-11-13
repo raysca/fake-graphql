@@ -9,7 +9,7 @@ const fsExistSync = fs.existsSync as jest.Mock
 const fsReadFileSync = fs.readFileSync as jest.Mock
 
 const handlerParams = {
-    dir: 'dir',
+    mocks: 'dir',
     port: 8080,
     schema: 'schema.graphql',
     endpoint: '/api/graphql'
@@ -37,7 +37,7 @@ describe('graphql', () => {
         it('should throw an error if the directory does not exist', async () => {
             fsExistSync.mockReturnValueOnce(true)
             fsExistSync.mockReturnValueOnce(false)
-            await expect(handler(handlerParams)).rejects.toThrow('Directory dir does not exist')
+            await expect(handler(handlerParams)).rejects.toThrow('mocks directory dir does not exist')
         })
 
         it('should register partials', async () => {
