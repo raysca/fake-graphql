@@ -175,5 +175,5 @@ lib
 
 .DS_Store
 
-docs/.vuepress/dist
-docs/.vuepress/cache
+docs/.vitepress/dist
+docs/.vitepress/cache
