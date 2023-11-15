@@ -3,10 +3,11 @@ import fs from 'node:fs'
 import { GraphQLFieldMap, GraphQLSchema } from "graphql";
 import { compile } from '../compile';
 
-const makeResolvers = (fields: GraphQLFieldMap<any, any>, mocksDir: string) => {
-    const operations: Record<string, any> = {}
+const makeResolvers = (fields: GraphQLFieldMap<unknown, unknown>, mocksDir: string) => {
+    const operations: Record<string, unknown> = {}
 
     for (const fieldName in fields) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         operations[fieldName] = async (_: Record<string, unknown>, args: Record<string, unknown>, context: Record<string, unknown>): Promise<Record<string, unknown>> => {
 
             const file = [

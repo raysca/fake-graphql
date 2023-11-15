@@ -1,0 +1,9 @@
+type Query {
+  hello: String
+  person: Person
+}
+
+type Person {
+  firstName: String
+  lastName: String
+}
