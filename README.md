@@ -1,27 +1,39 @@
 <h1 align="center">Fake GraphQL</h1
-<p align="center">Mock your GraphQL API with the power of the filesystem</p>
+<p align="center">Effortless GraphQL Mocking using the filesystem</p>
+
+Elevate your development experience with an innovative mock server, seamlessly
+powered by filesystem integration, dynamic
+[Handlebars](https://handlebarsjs.com/) templating, and realistic data
+generation with [Faker.js](https://fakerjs.dev/)
 
 ![Architecture](architecture.png "Architecture")
 
-Fake GraphQL is a tool that allows you to mock your GraphQL API with the power of the filesystem. It uses fakerjs to generate random data and handlebars as a template engine. The goal is to make it easy to create a mock server with zero configuration and zero code. It is useful for mocking out a GraphQL server during development or testing.
+## Benefits of using Fake GraphQL over other mock servers
 
-## Features
-
-- Zero configuration (just run `fake-graphql graphql -s schema.graphql`)
-- Zero code (no need to write any code)
-- File system based mocks
-- Easily generate sample data using [fakerjs](https://fakerjs.dev/)
-- Use [handlebars](https://handlebarsjs.com/) to generate complex data
+- **No code changes**. Just point your code to the mock server
+- **File system based mocks**. Easily create, edit and version mocks alongside
+  your code
+- **Dynamic and complex mocks**. Use [handlebars](https://handlebarsjs.com/) to
+  create dynamic and complex mocks
+- **Realistic data**. Easily generate sample data using [fakerjs](https://fakerjs.dev/)
+- **Zero configuration**. Just run `fake-graphql graphql -s schema.graphql`
 
 ## Quick Start
 
 Quickly start the server with a simple hello world example.
 
 ```bash
-echo "Hello, {{faker 'person.firstName'}}" > hello.hbs
+
+# Create a mocks directory
+mkdir mocks
+
+# Create a simple graphql schema
 echo type Query { hello: String } > schema.graphql
 
-npx @raysca/fake-graphql graphql
+# Create a simple handlebars template
+echo "Hello, {{faker 'person.firstName'}}" > mocks/hello.hbs
+
+npm exec @raysca/fake-graphql graphql
 ```
 
 The graphql server will be running on http://localhost:8080/api/graphql with a
@@ -29,13 +41,13 @@ playground to test it out.
 
 ## Server Options
 
-| Option                  | Description                                  | Default           |
-| ----------------------- | -------------------------------------------- | ----------------- |
-| `-s, --schema <schema>` | Path to the graphql schema file.             | current directory |
-| `-m, --mocks <mocks>`   | Path to the mocks directory.                 | current directory |
-| `-p, --port <port>`     | Port to run the server on.                   | 8080              |
-| `-e, --endpoint`        | The graphql endpoint will be accessible from | /api/graphql      |
-| `-w, --watch`           | Reload server if schema/mocks changes        | false             |
+| Option           | Description                                                     | Default           |
+| ---------------- | --------------------------------------------------------------- | ----------------- |
+| `-s, --schema`   | Path to the graphql schema file.                                | current directory |
+| `-m, --mocks`    | Path to the mocks directory containing `.hbs` or `.json` files. | current directory |
+| `-p, --port`     | Port to run the server on.                                      | 8080              |
+| `-e, --endpoint` | The graphql endpoint will be accessible from                    | /api/graphql      |
+| `-w, --watch`    | Reload server if schema/mocks changes                           | false             |
 
 ```bash
 Usage: fake-graphql graphql --help
@@ -43,12 +55,11 @@ Usage: fake-graphql graphql --help
 
 ## How it works
 
-Each graphql operation is mapped to a file in the `mocks` directory.
-`Fake GraphQL` matches the operation name to a file in the `mocks` directory. For
-example, if the operation name is `hello` then `Fake GraphQL` will look for a
-file called `hello.hbs` in the `mocks` directory. If the file exists then it
-will be used to generate the response. If the file does not exist then a default
-response will be returned.
+![How it works](how-it-works.png "How it works")
+
+There is a one-to-one mapping between graphql operations and mock files. This makes mocking intuitive and easy to understand. No complex configuration or code changes are required.
+
+The server will look for a mock file in the mocks directory that matches the requested graphql operation. For example, if the graphql operation is `getPerson` then the server will look for a file called `getPerson.hbs` or `getPerson.json` in the mocks directory.
 
 ## Examples
 
@@ -90,20 +101,24 @@ Here is an example `mocks/people.hbs` file:
 
 ## Advance Templates and Helpers
 
-Whilst `Fake GraphQL` supports simple JSON file based mocks, the power of the server shines when combined with handlebars templates and helpers.
+Whilst `Fake GraphQL` supports simple JSON file based mocks, the power of the
+server shines when combined with handlebars templates and helpers.
 
-The sever has a number of built-in helpers to make it easy to generate random data. Here are the built-in helpers:
+The `Fake GraphQL` server has a number of built-in helpers to make it easy to generate random
+data and more complex mocks. Here are the built-in helpers:
 
 ### faker
 
-[fakerjs](https://fakerjs.dev/). It takes a single argument which is the name of
-The `faker` helper is used to generate random data using
-the faker method to call. For example:
+`faker` is used to generate random sample data in templates . It takes the fakerjs method as a parameter for example:
 
-```text
-{{faker 'person.firstName'}}
-{{faker 'lorem.lines' min=3 max=5 }}
-{{faker "string.alphanumeric" 5}}
+```json
+{
+  "firstName": "{{faker 'person.firstName'}}",
+  "lastName": "{{faker 'person.lastName'}}",
+  "phone": "{{faker 'phone.number'}}",
+  "email": "{{faker 'internet.email'}}",
+  "weight": "{{faker 'number.float' min=100 max=200}}kg"
+}
 ```
 
 All the faker methods are supported. See the [fakerjs](https://fakerjs.dev/)
@@ -131,17 +146,6 @@ of times. This is good for generating arrays of values For example:
     }
 {{/repeat}}
 ]
-```
-
-### for
-
-The `for` helper is used to repeat a block of code a number of times. It is
-useful for generating a list of of values For example:
-
-```text
-{{#for 0 10}}
-   INSERT INTO test-table (id, name) VALUES ('{{faker "string.alphanumeric" 5}}', '{{faker 'person.firstName'}}')
-{{/for}}
 ```
 
 Also see the [examples](examples) directory for more examples.

@@ -6,7 +6,6 @@ import { hideBin } from 'yargs/helpers'
 import http, { IncomingMessage, ServerResponse } from 'node:http'
 import * as rest from './cmds/rest'
 import * as graphql from './cmds/graphql'
-import { ar } from '@faker-js/faker'
 
 yargs(hideBin(process.argv))
     .command('rest', 'RESTFul mocks', {
