@@ -22,20 +22,7 @@ describe('graphql', () => {
             jest.clearAllMocks()
         })
 
-        it('should create a schema file if it does not exist', async () => {
-            fsExistSync.mockReturnValueOnce(false)
-            fsReadFileSync.mockReturnValueOnce(`type Query { hello: String! }`)
-            await handler(handlerParams)
-            expect(fs.writeFileSync).toHaveBeenCalledWith('schema.graphql', 
-            `
-                type Query {
-                    hello: String!
-                }
-            `)
-        })
-
         it('should throw an error if the directory does not exist', async () => {
-            fsExistSync.mockReturnValueOnce(true)
             fsExistSync.mockReturnValueOnce(false)
             await expect(handler(handlerParams)).rejects.toThrow('mocks directory dir does not exist')
         })

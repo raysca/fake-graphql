@@ -1,0 +1,26 @@
+{
+    "description": "Get all todos",
+    "request": {
+        "method": "GET",
+        "path": "/todos",
+        "headers": {
+            "Accept": "application/json"
+        }
+    },
+    "response": {
+        "status": 200,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": [
+            {{#repeat 5}}
+                {
+                    "id": {{@index}},
+                    "title": "Todo {{@index}}",
+                    "owner": "{{faker "person.firstName"}}",
+                    "completed": {{randomize true false}}
+                }
+            {{/repeat}}
+        ]
+    }
+}

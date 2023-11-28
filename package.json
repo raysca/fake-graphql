@@ -9,7 +9,8 @@
     "fake-graphql": "lib/main.js"
   },
   "scripts": {
-    "rest": "ts-node ./src/index.ts rest",
+    "dev:rest": "ts-node ./src/main.ts rest",
+    "dev:graphql": "ts-node ./src/main.ts graphql",
     "dev:graphql:coffee": "ts-node ./src/main.ts graphql -s examples/coffee/schema.graphql -m examples/coffee",
     "dev:graphql:airlines": "ts-node ./src/main.ts graphql -s examples/airlines/schema.graphql -m examples/airlines",
     "watch:graphql": "nodemon",
@@ -43,6 +44,7 @@
     "graphql-yoga": "^5.0.0",
     "handlebars": "^4.7.8",
     "object-path": "^0.11.8",
+    "path-to-regexp": "^6.2.1",
     "yargs": "^17.7.2"
   }
 }

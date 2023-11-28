@@ -3,26 +3,21 @@ import fs from 'node:fs'
 import express from 'express'
 import { registerFilePartials, watchPartials } from '../compile/partials'
 import { createRouter } from '../graphql/router'
+import { GraphQLSchema } from 'graphql'
 
 interface HandlerParams {
     mocks: string
     port: number
-    schema: string
+    schema: string | GraphQLSchema
     endpoint: string
     watch?: boolean
 }
 
 export const handler = async (argv: HandlerParams): Promise<() => http.Server<typeof IncomingMessage, typeof ServerResponse>> => {
-    const { mocks, port, schema: schemaFile, endpoint, watch = true } = argv
+    const { mocks, port, schema, endpoint, watch = true } = argv
 
-    if (fs.existsSync(schemaFile) === false) {
-        fs.writeFileSync(schemaFile,
-            `
-                type Query {
-                    hello: String!
-                }
-            `
-        )
+    if (typeof schema !== 'string' && typeof schema !== 'object') {
+        throw new Error(`schema must be a string or a GraphQLSchema object`)
     }
 
     if (fs.existsSync(mocks) === false) {

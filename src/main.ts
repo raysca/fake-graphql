@@ -6,6 +6,11 @@ import { hideBin } from 'yargs/helpers'
 import http, { IncomingMessage, ServerResponse } from 'node:http'
 import * as rest from './cmds/rest'
 import * as graphql from './cmds/graphql'
+import { fetchRemoteSchema } from './schema'
+
+const isURL = (path: string): boolean => {
+    return path.startsWith('http')
+}
 
 yargs(hideBin(process.argv))
     .command('rest', 'RESTFul mocks', {
@@ -21,7 +26,21 @@ yargs(hideBin(process.argv))
             demandOption: false,
             default: 8080
         },
-    }, rest.handler)
+        watch: {
+            alias: 'w',
+            describe: 'Watch the mocks directory for changes',
+            demandOption: false,
+            default: false
+        }
+    }, async (argv) => {
+        if (!fs.existsSync(path.resolve(argv.dir))) {
+            throw new Error(`mocks directory ${argv.dir} does not exist`)
+        }
+        const app = await rest.handler(argv)
+        app.listen(argv.port, () => {
+            console.log(`Running a REST API server at ${argv.port}`)
+        })
+    })
     .command('graphql', 'Start the mock graphql server', {
         mocks: {
             alias: 'm',
@@ -51,9 +70,20 @@ yargs(hideBin(process.argv))
         let app: http.Server<typeof IncomingMessage, typeof ServerResponse>;
         let start;
 
-        if (argv.watch) {
+        const { schema } = argv
+        if (isURL(schema)) {
+            try {
+                const schemaObject = await fetchRemoteSchema(schema)
+                Object.assign(argv, { schema: schemaObject })
+            } catch (error) {
+                console.error(error)
+                process.exit(1)
+            }
+        }
+
+        if (argv.watch && !isURL(schema)) {
             if (fs.existsSync(path.resolve(argv.schema))) {
-                fs.watchFile(path.resolve(argv.schema), async (event) => {
+                fs.watchFile(path.resolve(argv.schema), async () => {
                     console.log('**** Schema file changed - Restarting Server ****')
                     app.close()
                     start = await graphql.handler(argv)
@@ -61,7 +91,7 @@ yargs(hideBin(process.argv))
                 })
             }
         }
-        
+
         start = await graphql.handler(argv)
         app = start()
     })
@@ -69,6 +99,4 @@ yargs(hideBin(process.argv))
     .help()
     .argv
 
-process.on('SIGINT', () => {
-    process.exit(0)
-})
+process.on('SIGINT', () => process.exit(0))

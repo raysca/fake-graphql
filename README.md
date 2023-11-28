@@ -1,4 +1,4 @@
-<h1 align="center">Fake GraphQL</h1
+<h1 align="center">Fake Server</h1
 <p align="center">Effortless GraphQL Mocking using the filesystem</p>
 
 Elevate your development experience with an innovative mock server, seamlessly
@@ -20,24 +20,63 @@ generation with [Faker.js](https://fakerjs.dev/)
 
 ## Quick Start
 
+### Using Local Schema
+
 Quickly start the server with a simple hello world example.
 
 ```bash
-
-# Create a mocks directory
-mkdir mocks
-
 # Create a simple graphql schema
 echo type Query { hello: String } > schema.graphql
 
 # Create a simple handlebars template
-echo "Hello, {{faker 'person.firstName'}}" > mocks/hello.hbs
+echo "Hello, {{faker 'person.firstName'}}" > hello.hbs
 
 npm exec @raysca/fake-graphql graphql
 ```
 
 The graphql server will be running on http://localhost:8080/api/graphql with a
 playground to test it out.
+
+### Using Remote Schema
+
+You can also use a remote schema by specifying the url to a graphql api. For example:
+Using the [Shopify](https://mock.shop/api) reference GraphQL api.
+
+```bash
+npm exec @raysca/fake-graphql graphql -s  https://mock.shop/api
+```
+
+Create a simple `shop.hbs` mock file
+
+```hbs
+{
+    "id": "{{fake "string.alphanumeric" 10}}",
+    "name": "The coffee shop",
+    "description": "The best coffee in the world",
+    "primaryDomain": {
+        "host": "coffee.com",
+        "sslEnabled": true,
+        "url": "https://coffee.com"
+    }
+}
+```
+
+and query the mock server
+
+```graphql
+query {
+  shop {
+    id
+    name
+    description
+    primaryDomain {
+      host
+      sslEnabled
+      url
+    }
+  }
+}
+```
 
 ## Server Options
 
