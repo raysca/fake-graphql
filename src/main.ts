@@ -13,7 +13,7 @@ const isURL = (path: string): boolean => {
 }
 
 yargs(hideBin(process.argv))
-    .command('rest', 'RESTFul mocks', {
+    .command('rest', 'Start the server to mock REST APIs', {
         dir: {
             alias: 'd',
             describe: 'Directory where the mocks are stored',
@@ -41,7 +41,7 @@ yargs(hideBin(process.argv))
             console.log(`Running a REST API server at ${argv.port}`)
         })
     })
-    .command('graphql', 'Start the mock graphql server', {
+    .command('graphql', 'Start the server to mock GraphQL APIs', {
         mocks: {
             alias: 'm',
             describe: 'Directory where the mocks are stored',
@@ -65,6 +65,13 @@ yargs(hideBin(process.argv))
             describe: 'The endpoint to serve the graphql server on',
             demandOption: false,
             default: '/api/graphql'
+        },
+        header: {
+            alias: 'H',
+            describe: 'Authentication header to be sent with the request to the remote schema',
+            multiple: true,
+            demandOption: false,
+            default: []
         }
     }, async (argv) => {
         let app: http.Server<typeof IncomingMessage, typeof ServerResponse>;
@@ -73,8 +80,9 @@ yargs(hideBin(process.argv))
         const { schema } = argv
         if (isURL(schema)) {
             try {
-                const schemaObject = await fetchRemoteSchema(schema)
-                Object.assign(argv, { schema: schemaObject })
+                const path = new URL(schema).pathname
+                const schemaObject = await fetchRemoteSchema(schema, argv.header)
+                Object.assign(argv, { schema: schemaObject, endpoint: path })
             } catch (error) {
                 console.error(error)
                 process.exit(1)

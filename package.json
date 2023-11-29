@@ -1,12 +1,12 @@
 {
-  "name": "@raysca/fake-graphql",
+  "name": "@raysca/faker-server",
   "version": "0.0.1",
-  "description": "Effortless GraphQL Mocking: Elevate your development experience with an innovative mock server, seamlessly powered by filesystem integration, dynamic Handlebars templating, and realistic data generation with Faker.js",
+  "description": "Effortless GraphQL and REST API Mocking: Elevate your development experience with an innovative mock server, seamlessly powered by filesystem integration, dynamic Handlebars templating, and realistic data generation with Faker.js",
   "module": "out/main.js",
   "type": "commonjs",
   "main": "lib/main.js",
   "bin": {
-    "fake-graphql": "lib/main.js"
+    "faker-server": "lib/main.js"
   },
   "scripts": {
     "dev:rest": "ts-node ./src/main.ts rest",

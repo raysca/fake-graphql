@@ -33,7 +33,7 @@ features:
 echo "Hello, {{faker 'person.firstName'}}" > hello.hbs
 echo type Query { hello: String } > schema.graphql
 
-npx @raysca/fake-graphql graphql
+npx @raysca/faker-server graphql
 ```
 
 ::: code-group

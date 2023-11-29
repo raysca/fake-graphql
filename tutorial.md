@@ -4,7 +4,7 @@ How can you quickly setup a mock GraphQL API for your frontend development witho
 
 Other solutions like [Mock Service Worker](https://mswjs.io/) or [Mockoon](https://mockoon.com/) are great mocking tools, but they require you to write code or complex GUI setup.
 
-In this tutorial we will use [Fake Graphql](https://github/raysca/fake-graphql) to setup a mock GraphQL API in seconds leveraging our filesystem. With Fake GraphQL you can create a mock GraphQL API by simply creating a folder structure and adding some files. Stay in your code editor and even version your mocks with your code.
+In this tutorial we will use [Fake Graphql](https://github/raysca/faker-server) to setup a mock GraphQL API in seconds leveraging our filesystem. With Fake GraphQL you can create a mock GraphQL API by simply creating a folder structure and adding some files. Stay in your code editor and even version your mocks with your code.
 
 ## Setup
 
@@ -13,7 +13,7 @@ We will be using the shopify storefront GraphQL API as an example. You can find 
 We will start by starting the Fake GraphQL server and pointing it to the Shopify storefront GraphQL endpoint and the mocks folder.
 
 ```bash
-npx fake-graphql -s  https://mock.shop/api -d mocks
+npm exec faker-server -s  https://mock.shop/api -d mocks
 ```
 
 The `-s` flag is used to specify the source GraphQL endpoint and the `-d` flag is used to specify the directory where the mock files are located. The server will now be running on `http://localhost:8080/api/graphql` with a GraphQL playground available at the same endpoint.

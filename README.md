@@ -1,5 +1,7 @@
-<h1 align="center">Fake Server</h1
-<p align="center">Effortless GraphQL Mocking using the filesystem</p>
+<h1 align="center">Faker Server</h1
+<p align="center">Effortless GraphQL and REST API Mocking with Faker.js and Handlebars templates</p>
+
+## GraphQL Mock Server
 
 Elevate your development experience with an innovative mock server, seamlessly
 powered by filesystem integration, dynamic
@@ -8,7 +10,7 @@ generation with [Faker.js](https://fakerjs.dev/)
 
 ![Architecture](architecture.png "Architecture")
 
-## Benefits of using Fake GraphQL over other mock servers
+### Faker-Sever GraphQL vs Other Mock Servers
 
 - **No code changes**. Just point your code to the mock server
 - **File system based mocks**. Easily create, edit and version mocks alongside
@@ -16,11 +18,11 @@ generation with [Faker.js](https://fakerjs.dev/)
 - **Dynamic and complex mocks**. Use [handlebars](https://handlebarsjs.com/) to
   create dynamic and complex mocks
 - **Realistic data**. Easily generate sample data using [fakerjs](https://fakerjs.dev/)
-- **Zero configuration**. Just run `fake-graphql graphql -s schema.graphql`
+- **Zero configuration**. Just run `faker-server graphql -s schema.graphql`
 
-## Quick Start
+### Quick Start
 
-### Using Local Schema
+#### Using Local Schema
 
 Quickly start the server with a simple hello world example.
 
@@ -31,20 +33,22 @@ echo type Query { hello: String } > schema.graphql
 # Create a simple handlebars template
 echo "Hello, {{faker 'person.firstName'}}" > hello.hbs
 
-npm exec @raysca/fake-graphql graphql
+npm exec @raysca/faker-server graphql
 ```
 
 The graphql server will be running on http://localhost:8080/api/graphql with a
 playground to test it out.
 
-### Using Remote Schema
+#### Using Remote Schema
 
 You can also use a remote schema by specifying the url to a graphql api. For example:
 Using the [Shopify](https://mock.shop/api) reference GraphQL api.
 
 ```bash
-npm exec @raysca/fake-graphql graphql -s  https://mock.shop/api
+npm exec @raysca/faker-server graphql -s  https://mock.shop/api
 ```
+
+The graphql server will be running on `http://localhost:8080/api`
 
 Create a simple `shop.hbs` mock file
 
@@ -78,7 +82,7 @@ query {
 }
 ```
 
-## Server Options
+### Faker-Server GraphQL Options
 
 | Option           | Description                                                     | Default           |
 | ---------------- | --------------------------------------------------------------- | ----------------- |
@@ -89,10 +93,10 @@ query {
 | `-w, --watch`    | Reload server if schema/mocks changes                           | false             |
 
 ```bash
-Usage: fake-graphql graphql --help
+Usage: faker-server graphql --help
 ```
 
-## How it works
+### How it works
 
 ![How it works](how-it-works.png "How it works")
 
@@ -100,7 +104,7 @@ There is a one-to-one mapping between graphql operations and mock files. This ma
 
 The server will look for a mock file in the mocks directory that matches the requested graphql operation. For example, if the graphql operation is `getPerson` then the server will look for a file called `getPerson.hbs` or `getPerson.json` in the mocks directory.
 
-## Examples
+### Examples
 
 Here is an example graphql schema:
 
@@ -188,3 +192,8 @@ of times. This is good for generating arrays of values For example:
 ```
 
 Also see the [examples](examples) directory for more examples.
+
+
+## REST Mock Server
+
+The `faker-server rest` command can be used to create a REST mock server. It

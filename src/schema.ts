@@ -106,15 +106,25 @@ fragment TypeRef on __Type {
 
 `
 
-export const fetchRemoteSchema = async (url: string): Promise<GraphQLSchema> => {
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({ query: INTRO_SPEC_QUERY })
-    })
-    const { data } = await response.json()
-    return buildClientSchema(data)
+export const fetchRemoteSchema = async (url: string, headers: string[]): Promise<GraphQLSchema> => {
+  const extraHeaders = headers.reduce((acc, header) => {
+    const [key, value] = header.split(':')
+    acc[key] = value
+    return acc
+  }, {})
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      ...extraHeaders
+    },
+    body: JSON.stringify({ query: INTRO_SPEC_QUERY })
+  })
+  const { data, error } = await response.json()
+  if (error) {
+    console.error(error)
+    throw new Error(JSON.stringify(error))
+  }
+  return buildClientSchema(data)
 }
